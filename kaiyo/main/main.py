@@ -5,7 +5,7 @@ import sys
 sys.path.append("/kaiyo/my_mod")
 from my_get_serial import get_data, send_data, log
 from my_motor import go_back, up_down, spinturn, roll, stop, stop_go_back, stop_up_down, br_xr, go_back_each, up_down_each, spinturn_each, spinturn_meca
-from my_balance import yaw, go_yaw, go_yaw_rot, diving, diving_while, go_yaw_simulator, go_yaw_onoff
+from my_balance import yaw, go_yaw_time, go_yaw_rot, diving, diving_while, go_yaw_simulator, go_yaw_onoff
 from my_rc import t10j
 from my_check import operation_check, status_check, my_exit
 from my_gpio import led_red, led_green, led_yellow, led_off
@@ -60,17 +60,19 @@ def mode_set():
 def my_main():
     # センサーデータ取得
     data = get_data("all")
-    # print data
+    # print data["yaw"]
     # test(30, 9)
     # test_rot(30, 100)
     # test_rot(40, 100)
     # go_yaw_simulator(30, 0, 200)
-    go_yaw_onoff(30, 0, 200)
+    # go_yaw_onoff(30, 0, 200)
+    # go_yaw_time(30, 0, 200)
     # yaw(0)
-    # go_yaw(80, 0, 30)
+    # go_yaw_time(80, 0, 30)
     # diving_while(1)
     # go_back(10)
     # up_down_each(80,0)
+    # up_down(20)
     # diving(80)
 
 

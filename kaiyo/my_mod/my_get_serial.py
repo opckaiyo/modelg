@@ -54,11 +54,12 @@ def get_data(val):
                 pass
                 # print "STATES", data["state"] + "!!"
                 # return 0
-
+            # print "aaa", data["yaw"]
             if val == "all":
                 # yawの値を変換してから渡す
                 # 0 ~ 180, 0 ~ -180
                 data["yaw"] = my_map(data["yaw"])
+                # print "bbb", data["yaw"]
                 return data
             if val == "yaw": return my_map(data[val])
             if val == "state": return data["state"]

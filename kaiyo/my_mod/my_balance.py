@@ -78,14 +78,13 @@ def yaw(val):
         gol_val = val
         # yawを取得して変換(now_val = -100 ~ 100)
         now_val = my_map(get_data("yaw"))
-        # print "aaa", now_val
+        # print "ccc", now_val
         # (now_val2 = 0 ~ 200)
         now_val2 = my_map_3(now_val)
         # print "bbb", now_val2
         print "gol_val", gol_val
         print "now_val", now_val
         # 偏差を調べる
-        # dev_val = gol_val - now_val
         dev_val = now_val2 - gol_val
         if dev_val >= 101:
             dev_val = -(200 - dev_val)
@@ -105,7 +104,7 @@ def yaw(val):
 
 # 指定した角度に機体を持っていく関数
 # タイマーで制御
-def go_yaw(speed, angle, set_time):
+def go_yaw_time(speed, angle, set_time):
     old_time = time.time()
     while True:
         # diving(90)
@@ -184,6 +183,7 @@ def go_yaw_rot(speed, angle, set_rot):
         print l, r
         print
 
+        # 設定した分回転したら終了
         now_rot0 = get_data("rot0")
         print "rot0",now_rot0
         if now_rot0 - set_rot_old >= set_rot:
@@ -191,14 +191,10 @@ def go_yaw_rot(speed, angle, set_rot):
             break
 
 
-
-
-
-
+# ----------------------------------------------------------------------------
 
 # 潜水
 def diving(val):
-
     depth = get_data("depth")
     # 変換
     map_depth = my_map_depth(depth)
@@ -208,7 +204,6 @@ def diving(val):
     gol_val = val
     dev_val = gol_val - now_val
 
-
     print "now_val", now_val
     print "gol_val", gol_val
     print "dev_val", dev_val
@@ -216,6 +211,7 @@ def diving(val):
     print "dev_val_map",dev_val
     print
     up_down(-dev_val)
+
 
 # 荒いやつ
 # def diving(val):
@@ -253,7 +249,6 @@ def diving_while(val):
         gol_val = val
         dev_val = gol_val - now_val
 
-
         print "now_val", now_val
         print "gol_val", gol_val
         print "dev_val", dev_val
@@ -266,18 +261,6 @@ def diving_while(val):
             print "depth OK !!!"
             stop_up_down()
             return 0
-
-
-def my_map_depth2(val):
-    in_min = -50
-    in_max = 50
-    out_min = -100
-    out_max = 100
-    val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-    if val >= 100: val = 100
-    if val <= -100: val = -100
-    # 少数切り捨ての為intに変換
-    return int(val)
 
 
 # -0.073
@@ -302,13 +285,20 @@ def my_map_depth(val):
     return int(val)
 
 
+def my_map_depth2(val):
+    in_min = -50
+    in_max = 50
+    out_min = -100
+    out_max = 100
+    val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    if val >= 100: val = 100
+    if val <= -100: val = -100
+    # 少数切り捨ての為intに変換
+    return int(val)
 
+# -----------------------------------------------------------------------------
 
-
-
-
-
-# 指定した角度に機体を持っていく関数
+# 指定した角度に機体を持っていく関数(改良版)
 def go_yaw_simulator(speed, angle, set_rot):
     set_rot_old = get_data("rot0")
     while True:
@@ -360,8 +350,48 @@ def go_yaw_simulator(speed, angle, set_rot):
         # return gol_val, now_val, dev_val, l, r
 
 
+def my_map15(val, speed):
+    if val <= 0:
+        in_min = 0
+        in_max = -100
+        out_min = 0
+        out_max = -speed
+        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+        # 少数切り捨ての為intに変換
+        return int(val)
+    else:
+        in_min = 0
+        in_max = 100
+        out_min = 0
+        out_max = speed
+        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+        # 少数切り捨ての為intに変換
+        return int(val)
 
-# 指定した角度に機体を持っていく関数
+
+def my_map13(val, speed):
+    if val >= 0:
+        in_min = 0
+        in_max = speed
+        out_min = -100
+        out_max = speed
+        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+        # 少数切り捨ての為intに変換
+        return int(val)
+    else:
+        in_min = 0
+        in_max = speed
+        out_min = -100
+        out_max = speed
+        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+        # 少数切り捨ての為intに変換
+        return int(val)
+
+
+# -----------------------------------------------------------------------------
+
+
+# 指定した角度に機体を持っていく関数(onとoff)
 def go_yaw_onoff(speed, angle, set_rot):
     set_rot_old = get_data("rot0")
     while True:
@@ -393,10 +423,12 @@ def go_yaw_onoff(speed, angle, set_rot):
                 # print "Move L"
                 r = speed
                 l = 0
+                # l = speed / 2
             else:
                 # 右に動かす
                 # print "Move R"
                 r = 0
+                # r = speed / 2
                 l = speed
 
         print l, r
@@ -410,43 +442,3 @@ def go_yaw_onoff(speed, angle, set_rot):
         if now_rot0 - set_rot_old >= set_rot:
             print "rot stop!!"
             break
-
-
-def my_map15(val, speed):
-    if val <= 0:
-        in_min = 0
-        in_max = -100
-        out_min = 0
-        out_max = -speed
-        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-        # 少数切り捨ての為intに変換
-        return int(val)
-    else:
-        in_min = 0
-        in_max = 100
-        out_min = 0
-        out_max = speed
-        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-        # 少数切り捨ての為intに変換
-        return int(val)
-
-
-
-
-def my_map13(val, speed):
-    if val >= 0:
-        in_min = 0
-        in_max = speed
-        out_min = -100
-        out_max = speed
-        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-        # 少数切り捨ての為intに変換
-        return int(val)
-    else:
-        in_min = 0
-        in_max = speed
-        out_min = -100
-        out_max = speed
-        val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-        # 少数切り捨ての為intに変換
-        return int(val)
