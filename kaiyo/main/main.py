@@ -22,7 +22,7 @@ def mode_set():
     # センサー初期化
     send_data("reboot")
     # マシンの状態をチェック
-    status_check(set_lipoC2=7.5, set_lipoC3S3=11.5)
+    status_check(set_lipoC2=7.2, set_lipoC3S3=11.5)
     # 待機状態のLEDをセット
     led_red()
 
@@ -60,25 +60,27 @@ def mode_set():
 def my_main():
     # センサーデータ取得
     data = get_data("all")
-    # print data["pitch"]
+    print data["depth"]
     # test(30, 9)
     # test_rot(30, 90)
     # test_rot_onoff(30, 90)
-    course_ver1(30, 100)
-    course_ver2(30, 100)
+
+    # course_ver1(30, 900)
+
+    # course_ver2(30, 200)
     # course_data_picking(30, 100)
 
 
-    # go_yaw_time(30, 0, 200, set_diving=False)
-    go_yaw_rot(30, 0, 200, set_diving=False)
+    # go_yaw_time(30, 0, 200, set_diving=60)
+    # go_yaw_rot(30, 0, 200, set_diving=False)
     # go_yaw_onoff(30, 0, 200, set_diving=False)
 
     # yaw(0, set_diving=False)
     # diving_while(1)
-    # go_back(100)
     # up_down_each(80,0)
-    # up_down(80)
-    # diving(80)
+    # go_back(20)
+    # up_down(20)
+    # diving(60)
 
 
 # -------------------------------------------------------------------
@@ -95,8 +97,8 @@ if __name__ == '__main__':
                     # メインのプログラム
                     # ----------------------------------------
                     my_main()
-                    # my_exit()
-                    # break
+                    my_exit()
+                    break
                     # ----------------------------------------
                 except KeyboardInterrupt as e:
                     # Ctrl-cを押したときの処理

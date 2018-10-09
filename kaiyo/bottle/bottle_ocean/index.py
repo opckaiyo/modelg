@@ -10,7 +10,7 @@ import random
 import sys
 sys.path.append("/kaiyo/my_mod")
 # from my_get_serial import get_data, send_data, log
-# from my_motor import go_back, up_down, spinturn, roll, stop, stop_go_back, stop_up_down, br_xr, go_back_each, up_down_each, spinturn_each, spinturn_meca
+from my_motor import go_back, up_down, spinturn, roll, stop, stop_go_back, stop_up_down, br_xr, go_back_each, up_down_each, spinturn_each, spinturn_meca
 # from test2 import go_yaw_simulato
 
 @route('/static/:path#.+#', name='static')
@@ -35,11 +35,11 @@ def setLedEntry():
     print
 
 
-    # if int(var["slider1"]) == 0:
-    #     go_back(int(var["slider2"]))
-    # else:
-    #     spinturn(int(var["slider1"]))
-    # up_down(int(var["slider3"]))
+    if int(var["slider1"]) == 0:
+        go_back(int(var["slider2"]))
+    else:
+        spinturn(int(var["slider1"]))
+    up_down(int(var["slider3"]))
 
 
 
@@ -47,7 +47,7 @@ def setLedEntry():
 def main():
     print("Initialize port")
     print('Server Start')
-    run(host='192.168.0.9', port=8888, debug=True, eloader=True)
+    run(host='192.168.11.4', port=8888, debug=True, eloader=True)
 
 
 def atExit():

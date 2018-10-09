@@ -243,14 +243,15 @@ def course_ver1(set_speed, set_rot):
     state_write("go_yaw")
     print "go_yaw"
     led_green()
-    go_yaw_rot(set_speed, 0, set_rot, set_diving=80)
+    go_yaw_rot(set_speed, 0, set_rot, set_diving=60)
+    # go_yaw_rot(set_speed, 0, set_rot, set_diving=False)
 
     # 慣性で流れるのを停止
     state_write("stop U")
     stop()
     led_off()
     time.sleep(0.5)
-    go_back(-30)
+    go_back(-20)
     time.sleep(1)
     stop()
 
@@ -263,7 +264,7 @@ def course_ver1(set_speed, set_rot):
 
     # Uターンの補助
     spinturn(30)
-    time.sleep(1.2)
+    time.sleep(1)
     stop()
 
     # Uターン
@@ -279,14 +280,15 @@ def course_ver1(set_speed, set_rot):
     state_write("go_yaw")
     print "go_yaw"
     led_green()
-    go_yaw_rot(set_speed, 100, set_rot)
+    go_yaw_rot(set_speed, 100, set_rot, set_diving=60)
+    # go_yaw_rot(set_speed, 100, set_rot, set_diving=False)
 
 
     # 慣性で流れるのを停止
     stop()
     led_off()
     time.sleep(0.5)
-    go_back(-30)
+    go_back(-20)
     time.sleep(1)
     stop()
 
@@ -298,16 +300,6 @@ def course_ver1(set_speed, set_rot):
     up_down(80)
     time.sleep(3)
 
-    # Uターンの補助
-    spinturn(20)
-    time.sleep(1)
-    stop()
-
-    # Uターン
-    state_write("yaw")
-    print "yaw"
-    led_red()
-    yaw(0, set_diving=False)
 
     state_write("end")
     stop()
@@ -317,10 +309,12 @@ def course_ver1(set_speed, set_rot):
 
 
 def course_ver2(set_speed, set_rot):
+    state_write("\ncourse_ver2 START")
     stop()
 
     # 浮上
     print "up"
+    state_write("up")
     # diving_while(20)
     # yaw(0, set_diving=1)
     up_down(80)
@@ -329,8 +323,9 @@ def course_ver2(set_speed, set_rot):
 
     # Uターン地点まで行く
     print "go_yaw"
+    state_write("go_yaw")
     led_green()
-    go_yaw_rot(set_speed, 0, set_rot, set_diving=80)
+    go_yaw_rot(set_speed, 0, set_rot, set_diving=90)
     led_off()
 
     # 慣性で流れるのを停止
@@ -342,19 +337,23 @@ def course_ver2(set_speed, set_rot):
 
     # 浮上
     print "up"
+    state_write("up")
     # diving_while(20)
     up_down(60)
     time.sleep(4)
 
     # Uターン
     print "yaw"
+    state_write("yaw")
     # yaw(100, set_diving=1)
     yaw(100, set_diving=False)
 
     # スタート地点まで行く
     print "go_yaw"
+    state_write("go_yaw")
     led_green()
-    go_yaw_rot(set_speed, 100, set_rot)
+    # go_yaw_rot(set_speed, 100, set_rot)
+    go_yaw_rot(set_speed, 100, set_rot, set_diving=90)
     led_off()
 
     # 慣性で流れるのを停止
@@ -366,11 +365,13 @@ def course_ver2(set_speed, set_rot):
 
     # 浮上
     print "up"
+    state_write("up")
     led_off()
     # diving_while(20)
     up_down(60)
     time.sleep(4)
 
+    state_write("END")
     stop()
 
 

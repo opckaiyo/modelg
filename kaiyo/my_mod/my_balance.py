@@ -71,8 +71,8 @@ def yaw(val, set_diving=True):
         print "motor_out", -dev_val
 
         # 目標角度になったら終了
-        # if dev_val <= 1 and dev_val >= -1:
-        if dev_val <= 0 and dev_val >= 0:
+        if dev_val <= 2 and dev_val >= -2:
+        # if dev_val <= 0 and dev_val >= 0:
             print "balance OK !!!"
             stop_go_back()
             return 0
@@ -161,7 +161,7 @@ def map_yaw2(val):
 def map_yaw_adjustment(val):
     in_min = 0
     in_max = 100
-    out_min = 0
+    out_min = 6
     out_max = 60
     val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
     return int(val)
@@ -256,12 +256,12 @@ def go_yaw_rot(speed, angle, set_rot, set_diving=True):
                 l =  (200 + l)
 
         print l, r
-        print
 
         go_back_each(l, r, 0)
 
         now_rot0 = get_data("rot0")
-        # print "rot0",now_rot0
+        print "rot000000000000000000000000000000",now_rot0 - set_rot_old
+        print
 
         if now_rot0 - set_rot_old >= set_rot:
             print "rot stop!!"
@@ -440,8 +440,10 @@ def diving(val):
 
 # 圧力センサーの値を(0 ~ 100)に変換
 def map_depth(val):
-    in_min = 0.01
-    in_max = 3.2
+    in_min = 0.6
+    in_max = 10
+    # in_min = 0.01
+    # in_max = 3.2
 
     if val <= in_min: val = in_min
     if val >= in_max: val = in_max
