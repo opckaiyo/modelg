@@ -16,9 +16,9 @@ def get_log():
     # print "Please file name :",
     # filename = raw_input()
     # file = open('/kaiyo/log/'+filename+'.txt', 'r')
-
-    file_name = "181003_172402.txt"
-    file = open('/kaiyo/log/'+file_name, 'r')
+# /kaiyo/log/181005_195052.txt
+    file_name = "/kaiyo/log/181005_202822.txt"
+    file = open(file_name, 'r')
     data = file.readline()
     data = ast.literal_eval(data)
 
@@ -40,8 +40,7 @@ def get_log():
 
             vals[str(cnt)] = data[val]
             cnt+=1
-            # print cnt
-            print data[val]
+            # print data[val]
         except Exception as e:
             print "----------------------------"
             print "Number of data :", cnt

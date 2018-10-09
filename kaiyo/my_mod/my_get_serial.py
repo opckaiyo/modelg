@@ -38,7 +38,7 @@ def log():
 
 def get_data(val):
     while True:
-        # Arduino から一行受信
+        # Arduino から一行取得
         data = ser.readline()
         # 受信エラー確認
         try:
@@ -68,22 +68,7 @@ def get_data(val):
             # 受信エラー
             print "Reception Error!!"
 
-"""
-def get_data(val):
-    while True:
-        # Arduino から一行受信
-        data = ser.readline()
-        # 受信エラー確認
-        try:
-            data = data[:-3]
-            data = float(data)
-            print data
-            data = my_map(data)
-            return data
-        except SyntaxError:
-            # 受信エラー
-            print "Reception Error!!"
-"""
+
 # ArduinoMEGAにコマンド送信
 def send_data(val):
     ser.write(val)

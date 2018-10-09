@@ -5,11 +5,12 @@ import sys
 sys.path.append("/kaiyo/my_mod")
 from my_get_serial import get_data, send_data, log
 from my_motor import go_back, up_down, spinturn, roll, stop, stop_go_back, stop_up_down, br_xr, go_back_each, up_down_each, spinturn_each, spinturn_meca
-from my_balance import yaw, go_yaw_time, go_yaw_rot, diving, diving_while, go_yaw_simulator, go_yaw_onoff
+from my_balance import yaw, go_yaw_time, go_yaw_rot, diving, diving_while, go_yaw_onoff
 from my_rc import t10j
 from my_check import operation_check, status_check, my_exit
 from my_gpio import led_red, led_green, led_yellow, led_off
-from my_course import test, test_rot
+from my_course import test, test_rot, test_rot_onoff, course_ver1, course_ver2, course_data_picking
+from my_state_write import state_write
 
 
 # -----------------------------------------------------------------------------
@@ -21,10 +22,9 @@ def mode_set():
     # センサー初期化
     send_data("reboot")
     # マシンの状態をチェック
-    status_check(set_lipoC2=7.5, set_lipoC3S3=12)
+    status_check(set_lipoC2=7.5, set_lipoC3S3=11.5)
     # 待機状態のLEDをセット
     led_red()
-
 
     # textにlogを残すか？
     log()
@@ -44,7 +44,7 @@ def mode_set():
     send_data("reboot")
 
     # カウントダウン
-    for cnt in range(6, 0, -1):
+    for cnt in range(3, 0, -1):
         led_red()
         print cnt
         time.sleep(0.5)
@@ -60,21 +60,25 @@ def mode_set():
 def my_main():
     # センサーデータ取得
     data = get_data("all")
-    # print data["yaw"]
+    # print data["pitch"]
     # test(30, 9)
-    # test_rot(30, 100)
-    # test_rot(40, 100)
-    # go_yaw_simulator(30, 0, 200)
-    # go_yaw_onoff(30, 0, 200)
-    # go_yaw_time(30, 0, 200)
-    # yaw(0)
-    # go_yaw_time(80, 0, 30)
-    # diving_while(1)
-    # go_back(10)
-    # up_down_each(80,0)
-    # up_down(20)
-    # diving(80)
+    # test_rot(30, 90)
+    # test_rot_onoff(30, 90)
+    course_ver1(30, 100)
+    course_ver2(30, 100)
+    # course_data_picking(30, 100)
 
+
+    # go_yaw_time(30, 0, 200, set_diving=False)
+    go_yaw_rot(30, 0, 200, set_diving=False)
+    # go_yaw_onoff(30, 0, 200, set_diving=False)
+
+    # yaw(0, set_diving=False)
+    # diving_while(1)
+    # go_back(100)
+    # up_down_each(80,0)
+    # up_down(80)
+    # diving(80)
 
 
 # -------------------------------------------------------------------
@@ -82,7 +86,7 @@ if __name__ == '__main__':
     try:
         # 初期設定 and チェック
         send_data("reboot")
-        # mode_set()
+        mode_set()
         while True:
             # 予期せぬエラーが発生した時の処理
             try:
@@ -91,6 +95,7 @@ if __name__ == '__main__':
                     # メインのプログラム
                     # ----------------------------------------
                     my_main()
+                    # my_exit()
                     # break
                     # ----------------------------------------
                 except KeyboardInterrupt as e:
@@ -100,12 +105,16 @@ if __name__ == '__main__':
             except Exception as e:
                 # 予期せぬエラーが発生した時の処理
                 # stop()
+                # エラーの内容を残す
+                state_write(e)
                 print "\nError =",e
                 print "Error!!!!!!!!!!!!!!!!!!!!!!!"
-                led_green()
-                time.sleep(0.05)
-                led_off()
-                time.sleep(0.05)
+                for i in range(20):
+                    led_green()
+                    time.sleep(0.05)
+                    led_off()
+                    time.sleep(0.05)
+                my_exit()
 
     except KeyboardInterrupt as e:
         print "\nCtrl-c!!"

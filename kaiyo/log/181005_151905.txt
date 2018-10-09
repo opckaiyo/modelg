@@ -1,1 +1,0 @@
-{'lipoC2': 7.99, 'lipoC3S1': 4.17, 'temp': 25.56, 'lipoC3S3': 12.6, 'lipoC3S2': 8.33, 'rot1': 0, 'rot0': 0, 'rot3': 0, 'rot2': 0, 'state': 'normal', 'yaw': 0.0, 'datetime': '2018-10-05 15:19:10.780093', 'mgs': 1, 'volt': 0.7813, 'depth': -0.293, 'time': 1, 'pitch': -4.7, 'roll': -2.11, 'pres': 160}
