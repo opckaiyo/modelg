@@ -163,6 +163,7 @@ def map_yaw_adjustment(val):
     in_max = 100
     out_min = 6
     out_max = 60
+    # out_max = 100
     val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
     return int(val)
 
@@ -396,6 +397,7 @@ def diving_while(val):
 
 # 潜水
 def diving(val):
+    print "depth!!"
     # 圧力センサの値を取得
     depth = get_data("depth")
     # (圧力センサの値) → (0 ~ 100)
@@ -440,10 +442,12 @@ def diving(val):
 
 # 圧力センサーの値を(0 ~ 100)に変換
 def map_depth(val):
-    in_min = 0.6
-    in_max = 10
-    # in_min = 0.01
-    # in_max = 3.2
+    # 海での値(波の上)
+    # in_min = 0.6
+    # in_max = 10
+    # プールでの値
+    in_min = 0.3
+    in_max = 3.8
 
     if val <= in_min: val = in_min
     if val >= in_max: val = in_max
@@ -479,14 +483,16 @@ def map_depth2(val):
         if val >= 0:
             in_min = 0
             in_max = 100
-            out_min = set_range
+            # out_min = set_range
+            out_min = 40
             out_max = 90
             val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
             return int(val)
         else:
             in_min = 0
             in_max = -100
-            out_min = -set_range
+            # out_min = -set_range
+            out_min = -40
             out_max = -90
             val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
             return int(val)

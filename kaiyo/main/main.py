@@ -9,7 +9,7 @@ from my_balance import yaw, go_yaw_time, go_yaw_rot, diving, diving_while, go_ya
 from my_rc import t10j
 from my_check import operation_check, status_check, my_exit
 from my_gpio import led_red, led_green, led_yellow, led_off
-from my_course import test, test_rot, test_rot_onoff, course_ver1, course_ver2, course_data_picking
+from my_course import test, test_rot, test_rot_onoff, course_ver1, course_ver2, course_ver3, course_data_picking
 from my_state_write import state_write
 
 
@@ -22,7 +22,7 @@ def mode_set():
     # センサー初期化
     send_data("reboot")
     # マシンの状態をチェック
-    status_check(set_lipoC2=7.2, set_lipoC3S3=11.5)
+    status_check(set_lipoC2=7.1, set_lipoC3S3=11.4)
     # 待機状態のLEDをセット
     led_red()
 
@@ -35,7 +35,9 @@ def mode_set():
     # リードスイッチでスタート
     data =  get_data("all")
     # print data
-    while data["mgs"] == 0:
+    # スタート動作なし
+    while data["mgs"] == 1:
+    # while data["mgs"] == 0:
         data =  get_data("all")
         print data["mgs"]
         print "Ready !!"
@@ -51,6 +53,10 @@ def mode_set():
         led_off()
         time.sleep(0.5)
 
+    # センサ初期化で起こるずれを
+    # for i in range(20):
+    #     data = get_data("all")
+
     print "Go !!"
     led_yellow()
 
@@ -60,27 +66,33 @@ def mode_set():
 def my_main():
     # センサーデータ取得
     data = get_data("all")
-    print data["depth"]
+    # print data["depth"]
+    print data["yaw"]
     # test(30, 9)
     # test_rot(30, 90)
     # test_rot_onoff(30, 90)
 
+    # 波の上
     # course_ver1(30, 900)
+    # course_ver1(30, 90)
 
-    # course_ver2(30, 200)
+    # course_ver2(40, 90)
     # course_data_picking(30, 100)
 
+    # コースに沿ったプログラム
+    course_ver3(30, 90)
 
     # go_yaw_time(30, 0, 200, set_diving=60)
-    # go_yaw_rot(30, 0, 200, set_diving=False)
+    # go_yaw_rot(30, 0, 100, set_diving=False)
     # go_yaw_onoff(30, 0, 200, set_diving=False)
 
     # yaw(0, set_diving=False)
-    # diving_while(1)
     # up_down_each(80,0)
     # go_back(20)
     # up_down(20)
-    # diving(60)
+    # diving_while(20)
+    # diving(50)
+    # yaw(0, set_diving=False)
 
 
 # -------------------------------------------------------------------
@@ -97,8 +109,8 @@ if __name__ == '__main__':
                     # メインのプログラム
                     # ----------------------------------------
                     my_main()
-                    my_exit()
-                    break
+                    # my_exit()
+                    # break
                     # ----------------------------------------
                 except KeyboardInterrupt as e:
                     # Ctrl-cを押したときの処理

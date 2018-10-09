@@ -374,6 +374,70 @@ def course_ver2(set_speed, set_rot):
     state_write("END")
     stop()
 
+    my_exit()
+
+
+# -----------------------------------------------------------------------------
+
+
+def course_ver3(set_speed, set_rot):
+    state_write("\ncourse_ver3 START")
+    stop()
+
+    # 浮上
+    diving_while(30)
+    yaw(0, set_diving=20)
+
+    # 海上航行
+    led_red()
+    go_yaw_rot(set_speed, 0, 40, set_diving=20)
+    led_off()
+
+    stop()
+    diving_while(80)
+
+    # Uターン地点まで行く
+    led_green()
+    go_yaw_rot(set_speed, 0, 50, set_diving=80)
+    led_off()
+
+    # 慣性で流れるのを停止
+    stop()
+    time.sleep(0.5)
+    go_back(-20)
+    time.sleep(1)
+    stop()
+
+    # 浮上してUターン
+    diving_while(30)
+    yaw(100, set_diving=20)
+
+    # スタート地点まで行く
+    led_green()
+    go_yaw_rot(set_speed, 100, 50, set_diving=80)
+    led_off()
+
+    stop()
+    diving_while(30)
+
+    # 海上航行
+    led_red()
+    go_yaw_rot(set_speed, 100, 40, set_diving=30)
+    led_off()
+
+    # 慣性で流れるのを停止
+    stop()
+    time.sleep(0.5)
+    go_back(-20)
+    time.sleep(1)
+    stop()
+
+    # 浮上
+    diving_while(20)
+
+    stop()
+
+    my_exit()
 
 # -----------------------------------------------------------------------------
 
