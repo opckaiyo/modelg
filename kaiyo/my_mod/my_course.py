@@ -319,13 +319,23 @@ def course_ver2(set_speed, set_rot):
     # yaw(0, set_diving=1)
     up_down(80)
     time.sleep(3)
+    stop()
     yaw(0, set_diving=False)
 
-    # Uターン地点まで行く
+    # Uターン地点まで行く(海上)
     print "go_yaw"
-    state_write("go_yaw")
+    state_write("kaijou")
+    led_red()
+    # go_yaw_rot(set_speed, 0, 300, set_diving=5)
+    go_yaw_onoff(set_speed, 0, 300, set_diving=5)
+    led_off()
+
+    # Uターン地点まで行く(潜水)
+    print "go_yaw"
+    state_write("sennsui")
     led_green()
-    go_yaw_rot(set_speed, 0, set_rot, set_diving=90)
+    # go_yaw_rot(set_speed, 0, set_rot, set_diving=80)
+    go_yaw_onoff(set_speed, 0, set_rot, set_diving=80)
     led_off()
 
     # 慣性で流れるのを停止
@@ -348,12 +358,23 @@ def course_ver2(set_speed, set_rot):
     # yaw(100, set_diving=1)
     yaw(100, set_diving=False)
 
-    # スタート地点まで行く
+    # スタート地点まで行く(潜水)
     print "go_yaw"
-    state_write("go_yaw")
+    state_write("sennsui")
     led_green()
     # go_yaw_rot(set_speed, 100, set_rot)
-    go_yaw_rot(set_speed, 100, set_rot, set_diving=90)
+    # go_yaw_rot(set_speed, 100, set_rot, set_diving=80)
+    go_yaw_onoff(set_speed, 100, 850, set_diving=80)
+    led_off()
+
+    # スタート地点まで行く(海上)
+    print "go_yaw"
+    state_write("go_yaw")
+    led_red()
+    # go_yaw_rot(set_speed, 100, set_rot)
+    # go_yaw_rot(set_speed, 100, 300, set_diving=5)
+    # 回転数を調整
+    go_yaw_onoff(set_speed, 100, 400, set_diving=5)
     led_off()
 
     # 慣性で流れるのを停止
@@ -385,20 +406,20 @@ def course_ver3(set_speed, set_rot):
     stop()
 
     # 浮上
-    diving_while(30)
-    yaw(0, set_diving=20)
+    diving_while(10)
+    yaw(0, set_diving=10)
 
     # 海上航行
     led_red()
-    go_yaw_rot(set_speed, 0, 40, set_diving=20)
+    go_yaw_rot(set_speed, 0, 100, set_diving=10)
     led_off()
 
     stop()
-    diving_while(80)
+    diving_while(40)
 
     # Uターン地点まで行く
     led_green()
-    go_yaw_rot(set_speed, 0, 50, set_diving=80)
+    go_yaw_rot(set_speed, 0, 200, set_diving=60)
     led_off()
 
     # 慣性で流れるのを停止
@@ -409,20 +430,20 @@ def course_ver3(set_speed, set_rot):
     stop()
 
     # 浮上してUターン
-    diving_while(30)
+    diving_while(10)
     yaw(100, set_diving=20)
 
     # スタート地点まで行く
     led_green()
-    go_yaw_rot(set_speed, 100, 50, set_diving=80)
+    go_yaw_rot(set_speed, 100, 100, set_diving=60)
     led_off()
 
     stop()
-    diving_while(30)
+    diving_while(10)
 
     # 海上航行
     led_red()
-    go_yaw_rot(set_speed, 100, 40, set_diving=30)
+    go_yaw_rot(set_speed, 100, 200, set_diving=10)
     led_off()
 
     # 慣性で流れるのを停止
@@ -433,7 +454,7 @@ def course_ver3(set_speed, set_rot):
     stop()
 
     # 浮上
-    diving_while(20)
+    diving_while(10)
 
     stop()
 
@@ -449,22 +470,33 @@ def course_data_picking(set_speed, set_rot):
     print "up"
     # diving_while(20)
     # yaw(0, set_diving=1)
-    up_down(80)
+    up_down(60)
     time.sleep(3)
-    yaw(0, set_diving=False)
+    # yaw(0, set_diving=False)
 
     # Uターン地点まで行く
     print "go_yaw"
     led_green()
-    go_yaw_rot(set_speed, 0, set_rot, set_diving=80)
+    go_yaw_rot(set_speed, 0, set_rot, set_diving=5)
     led_off()
 
     stop_go_back()
 
-    # 浮上
-    print "up"
-    # diving_while(20)
-    up_down(60)
-    time.sleep(4)
+    # 慣性で流れるのを停止
+    stop()
+    time.sleep(0.5)
+    go_back(-20)
+    time.sleep(1)
+    stop()
+
+    yaw(0, set_diving=False)
+
+
+    print "go_yaw"
+    led_green()
+    go_yaw_rot(set_speed, 100, set_rot, set_diving=5)
+    led_off()
 
     stop()
+
+    my_exit()

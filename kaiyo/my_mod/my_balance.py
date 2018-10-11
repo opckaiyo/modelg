@@ -63,13 +63,6 @@ def yaw(val, set_diving=True):
         if dev_val >= 101:
             dev_val = -(200 - dev_val)
 
-        # モータの出力を調整(-100 ~ 0 ~ 100) → (-60 ~ 0 ~ 60)
-        dev_val = map_yaw_adjustment(dev_val)
-        spinturn(-dev_val)
-
-        print "dev_val", -dev_val
-        print "motor_out", -dev_val
-
         # 目標角度になったら終了
         if dev_val <= 2 and dev_val >= -2:
         # if dev_val <= 0 and dev_val >= 0:
@@ -77,6 +70,13 @@ def yaw(val, set_diving=True):
             stop_go_back()
             return 0
 
+
+        # モータの出力を調整(-100 ~ 0 ~ 100) → (-60 ~ 0 ~ 60)
+        dev_val = map_yaw_adjustment(dev_val)
+        spinturn(-dev_val)
+
+        print "dev_val", -dev_val
+        print "motor_out", -dev_val
         print
 
 
@@ -161,10 +161,18 @@ def map_yaw2(val):
 def map_yaw_adjustment(val):
     in_min = 0
     in_max = 100
-    out_min = 6
+    out_min = 0
     out_max = 60
     # out_max = 100
     val = (val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+    if val == 0:
+        val = 0
+    elif val <= 10 and val >= -10:
+        if val >= 0:
+            val = 10
+        else:
+            val = 10
     return int(val)
 
 
@@ -253,8 +261,8 @@ def go_yaw_rot(speed, angle, set_rot, set_diving=True):
             # 左に動く（左を弱める）
             l = speed + dev_val
             l = map13(l, speed)
-            if l <= -100:
-                l =  (200 + l)
+            # if l <= -100:
+            #     l =  (200 + l)
 
         print l, r
 
@@ -360,6 +368,7 @@ def go_yaw_onoff(speed, angle, set_rot, set_diving=True):
         go_back_each(l, r, 0)
 
         now_rot0 = get_data("rot0")
+        print "rot000000000000000000000000000000",now_rot0 - set_rot_old
         # print "rot0",now_rot0
 
         if now_rot0 - set_rot_old >= set_rot:
@@ -445,9 +454,11 @@ def map_depth(val):
     # 海での値(波の上)
     # in_min = 0.6
     # in_max = 10
+    in_min = 0.6
+    in_max = 7.6
     # プールでの値
-    in_min = 0.3
-    in_max = 3.8
+    # in_min = 0.3
+    # in_max = 3.8
 
     if val <= in_min: val = in_min
     if val >= in_max: val = in_max

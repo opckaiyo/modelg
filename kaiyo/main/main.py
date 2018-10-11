@@ -22,7 +22,7 @@ def mode_set():
     # センサー初期化
     send_data("reboot")
     # マシンの状態をチェック
-    status_check(set_lipoC2=7.1, set_lipoC3S3=11.4)
+    status_check(set_lipoC2=7.1, set_lipoC3S3=11.3)
     # 待機状態のLEDをセット
     led_red()
 
@@ -36,14 +36,20 @@ def mode_set():
     data =  get_data("all")
     # print data
     # スタート動作なし
-    while data["mgs"] == 1:
-    # while data["mgs"] == 0:
+    # while data["mgs"] == 1:
+    # スタート動作あり
+    while data["mgs"] == 0:
         data =  get_data("all")
         print data["mgs"]
         print "Ready !!"
 
     # センサー初期化
     send_data("reboot")
+    time.sleep(0.5)
+    send_data("reboot")
+    time.sleep(0.5)
+    send_data("reboot")
+    time.sleep(0.5)
 
     # カウントダウン
     for cnt in range(3, 0, -1):
@@ -67,7 +73,7 @@ def my_main():
     # センサーデータ取得
     data = get_data("all")
     # print data["depth"]
-    print data["yaw"]
+    # print data["yaw"]
     # test(30, 9)
     # test_rot(30, 90)
     # test_rot_onoff(30, 90)
@@ -76,14 +82,14 @@ def my_main():
     # course_ver1(30, 900)
     # course_ver1(30, 90)
 
-    # course_ver2(40, 90)
-    # course_data_picking(30, 100)
+    course_ver2(40, 1050)
+    # course_data_picking(30, 150)
 
     # コースに沿ったプログラム
-    course_ver3(30, 90)
+    # course_ver3(30, 200)
 
     # go_yaw_time(30, 0, 200, set_diving=60)
-    # go_yaw_rot(30, 0, 100, set_diving=False)
+    # go_yaw_rot(30, 100, 100, set_diving=False)
     # go_yaw_onoff(30, 0, 200, set_diving=False)
 
     # yaw(0, set_diving=False)
@@ -92,14 +98,14 @@ def my_main():
     # up_down(20)
     # diving_while(20)
     # diving(50)
-    # yaw(0, set_diving=False)
+    # yaw(0, set_diving=50)
 
 
 # -------------------------------------------------------------------
 if __name__ == '__main__':
     try:
         # 初期設定 and チェック
-        send_data("reboot")
+        # send_data("reboot")
         mode_set()
         while True:
             # 予期せぬエラーが発生した時の処理

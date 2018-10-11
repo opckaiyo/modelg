@@ -14,7 +14,10 @@ def get_log():
     vals = {}
     cnt = 0
 
-    file_name = "/kaiyo/log/181005_202822.txt"
+    print
+    print "Please File Path :",
+    file_name = raw_input()
+
     file = open(file_name, 'r')
     data = file.readline()
     data = ast.literal_eval(data)
